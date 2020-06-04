@@ -6,8 +6,8 @@ CREATE TABLE messages (
   /* Describe your table here.*/
   id int NOT NULL primary key auto_increment,
   user INT,
-  content varchar(255),
-  time_created varchar(255)
+  text varchar(255),
+  roomname varchar(255)
 );
 
 /* Create other tables and define schemas for them here! */
@@ -19,7 +19,12 @@ CREATE TABLE users (
 
 
 
+
 /*  Execute this file from the command line by typing:
  *    mysql -u root < server/schema.sql
  *  to create the database and the tables.*/
 
+-- CREATE TABLE rooms (
+--   /* Describe your table here.*/
+--   id int NOT NULL primary key auto_increment,
+--   name varchar(255)

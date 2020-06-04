@@ -8,8 +8,7 @@ module.exports = {
         console.log("error inusers module"+ err);
       }else{
         console.log("success loop!");
-        return results;
-        callback();
+        callback(err, results);
       }
     })
   },

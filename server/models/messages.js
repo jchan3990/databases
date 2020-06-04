@@ -1,5 +1,6 @@
 // var db = require('../db');
  var db = require('../db/index.js');
+ var user = require('./users.js');
 
 
 module.exports = {
@@ -10,25 +11,33 @@ module.exports = {
         callback(err);
       }else{
         console.log("success loop!");
-        callback(null, result);
+        callback(null, results);
       }
     })
   }, // a function which produces all the messages
-  create: function (userName="default",content="hello world", feedback=()=>{}) {
-    //We are missing find user ID to put into the meesage.
-
+  create: function (userName,text,roomName, callback=()=>{}) {
     console.log("(models/messages.js) loop starts ");
-    // var post = {id: msgCount, user:1, content:context, time_created:"abc"};
-    var query = db.connection.query(`INSERT INTO messages (user, content, time_created) VALUES ("1","${content}","some moment ago")`,function(err,results,field){
-      if(err) {
-       console.log("error in messages Model!" + err);
-      }else{
-      console.log("store messages de success!");
+    //We are missing find user ID to put into the meesage.
+    console.log("getting all user info for id");
+    user.getAll( (err, results) =>{
+      var userID;
+      for(var index in results){
+        if(userName === results[index].name){
+          userID = results[index].id
+        }
       }
-    });
-  }  // a function which can be used to insert a message into the database
-};
+      var query = db.connection.query(`INSERT INTO messages (user, text, roomname) VALUES ("${userID}","${text}","${roomName}")`,function(err,results,field){
+        if(err) {
+         console.log("error in messages Model!" + err);
+        }else{
+        console.log("store messages de success!");
+        }
+        callback();
+      });
 
+    })
+  }
+};
 
 
 // CREATE TABLE messages (
@@ -36,5 +45,5 @@ module.exports = {
 //   id int NOT NULL primary key auto_increment,
 //   user INT,
 //   content varchar(255),
-//   time_created varchar(255)
+//   roomname varchar(255)
 // );

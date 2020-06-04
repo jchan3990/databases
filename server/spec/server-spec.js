@@ -5,21 +5,6 @@ var mysql = require('mysql');
 var request = require('request'); // You might need to npm install the request module!
 var expect = require('chai').expect;
 
-
-// const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: '12345678',
-//   database: 'chat'
-// });
-// connection.connect((err) => {
-//   if (err) {
-//     throw err;
-//   } else {
-//     console.log('Connected!');
-//   }
-// });
-
 describe('Persistent Node Chat Server', function() {
   var dbConnection;
 
@@ -32,11 +17,13 @@ describe('Persistent Node Chat Server', function() {
     });
     dbConnection.connect();
 
-       var tablename = "users"; // TODO: fill this out
+       var tablename = "users"; //clear users table
+       var tablemsg = "messages"; //clear messages table
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
-    dbConnection.query('truncate ' + tablename, done);
+    dbConnection.query('truncate ' + tablename);
+    dbConnection.query('truncate ' + tablemsg, done);
   });
 
   afterEach(function() {
@@ -60,19 +47,11 @@ describe('Persistent Node Chat Server', function() {
           roomname: 'Hello'
         }
       }, function () {
-        // Now if we look in the database, we should find the
-        // posted message there.
-
-        // TODO: You might have to change this test to get all the data from
-        // your message table, since this is schema-dependent.
         var queryString = 'SELECT * FROM messages';
         var queryArgs = [];
 
         dbConnection.query(queryString, queryArgs, function(err, results) {
-          // Should have one result:
           expect(results.length).to.equal(1);
-
-          // TODO: If you don't have a column named text, change this test.
           expect(results[0].text).to.equal('In mercy\'s name, three days is all I need.');
 
           done();
@@ -89,7 +68,8 @@ describe('Persistent Node Chat Server', function() {
     // here depend on the schema you design, so I'll leave
     // them up to you. */
 
-    dbConnection.query(queryString, queryArgs, function(err) {
+    //insert messages
+    dbConnection.query('INSERT INTO messages (user, text, roomname) VALUES ("1","Men like you can never change!","main")', function(err) {
       if (err) { throw err; }
 
       // Now query the Node chat server and see if it returns
@@ -102,6 +82,4 @@ describe('Persistent Node Chat Server', function() {
       });
     });
   });
-
-
 });
