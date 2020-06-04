@@ -1,0 +1,10 @@
+1. Create MySQL database from promp
+  - create and use.
+  - use describe
+  - insert a new row
+  - use update
+2. schema visualizer
+  - create schema with 2 different tables.
+    - one with foreign key
+  - take screen shot on the schema
+3.

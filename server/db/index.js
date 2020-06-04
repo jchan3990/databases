@@ -5,3 +5,20 @@ var mysql = require('mysql');
 // and to the database "chat".
 
 
+module.exports.connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '12345678',
+  database: 'chat'
+});
+
+
+module.exports.connection.connect((err) => {
+  if (err) {
+    throw err;
+  } else {
+    console.log('mysql server Connected!');
+  }
+});
+
+

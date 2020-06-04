@@ -5,18 +5,34 @@ var mysql = require('mysql');
 var request = require('request'); // You might need to npm install the request module!
 var expect = require('chai').expect;
 
+
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '12345678',
+//   database: 'chat'
+// });
+// connection.connect((err) => {
+//   if (err) {
+//     throw err;
+//   } else {
+//     console.log('Connected!');
+//   }
+// });
+
 describe('Persistent Node Chat Server', function() {
   var dbConnection;
 
   beforeEach(function(done) {
     dbConnection = mysql.createConnection({
-      user: 'student',
-      password: 'student',
+      host: 'localhost',
+      user: 'root',
+      password: '12345678',
       database: 'chat'
     });
     dbConnection.connect();
 
-       var tablename = ""; // TODO: fill this out
+       var tablename = "users"; // TODO: fill this out
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
@@ -86,4 +102,6 @@ describe('Persistent Node Chat Server', function() {
       });
     });
   });
+
+
 });
