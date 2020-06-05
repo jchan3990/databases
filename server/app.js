@@ -22,7 +22,10 @@ app.use(parser.json());
 app.use('/classes', router);
 
 // Serve the client files
-app.use(express.static(__dirname + '/../client'));
+// console.log(__dirname + '/../client/hrsf128-chatterbox-client');
+// app.use(express.static(__dirname + '/../client/hrsf128-chatterbox-client'));
+ app.use(express.static(__dirname + '/../client/hrsf128-chatterbox-client'));
+
 
 // If we are being run directly, run the server.
 if (!module.parent) {
