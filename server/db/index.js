@@ -1,24 +1,41 @@
-var mysql = require('mysql');
-
-// Create a database connection and export it from this file.
-// You will need to connect with the user "root", no password,
-// and to the database "chat".
-
-
-module.exports.connection = mysql.createConnection({
+const Sequelize = require('Sequelize');
+const orm = new Sequelize ('chat', 'root','12345678',{
   host: 'localhost',
-  user: 'root',
-  password: '12345678',
-  database: 'chat'
-});
-
-
-module.exports.connection.connect((err) => {
-  if (err) {
-    throw err;
-  } else {
-    console.log('mysql server Connected!');
+  dialect: 'mysql',
+  define: {
+    timestamps: false
   }
 });
 
+
+
+const User = orm.define('User', {
+  name: Sequelize.STRING
+});
+
+const Message = orm.define('Message',{
+  userid: {
+    type: Sequelize.INTEGER,
+    referece: {
+      model: User,
+      key: 'id'
+    }
+  },
+  text: Sequelize.STRING,
+  roomname: Sequelize.STRING,
+});
+
+User.destroy({
+  where: {},
+  truncate: true
+})
+
+Message.destroy({
+  where: {},
+  truncate: true
+})
+
+module.exports.User = User;
+module.exports.Message = Message;
+module.exports.orm = orm;
 

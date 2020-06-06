@@ -1,33 +1,30 @@
-var models = require('../models');
+const db = require('../db/index');
+
 
 module.exports = {
   get: function (req, res) {
-    var data = models.messages.getAll((err,result)=>{
-      if(err){
-        console.log("error in getall message function!");
-        res.send('failed!');
-      }else{
-        res.send(result);
-      }
-    });
-
-  }, // a function which handles a get request for all messages
+    console.log("IN controller msg GET loop");
+    db.orm.sync()
+    .then(() => db.Message.findAll())
+    .then( (results) =>{
+        res.send(results);
+      })
+  },
   post: function (req, res) {
-    console.log("in controller post loop ");
-    var userName = req.body.username;
-    var text = req.body.message;
-    var roomName = req.body.roomname;
-    models.messages.create(userName,text,roomName,()=>{
-      console.log("write to mysql success");
-      res.send('Success!');
-    });
+    console.log("IN controller Msg POST loop");
+    db.orm.sync()
+    .then( () => db.User.findOrCreate({where:{name: req.body.user}, raw: true,attributes:['id']})
+    .then( (user) =>{
+      var params = {
+        userid: user[0].id,
+        text: req.body.text,
+        roomname: req.body.roomname
+      };
+      db.Message.create(params).then( (err,result) => {
+        res.sendStatus(201);
+      });
+    }))
   }
-};//
+}
 
-// // CREATE TABLE messages (
-//   /* Describe your table here.*/
-//   id int NOT ULL primary key auto_increment,
-//   user INT,
-//   content varchar(255),
-//   roomname varchar(255)
-// );
+

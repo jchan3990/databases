@@ -35,15 +35,15 @@ describe('Persistent Node Chat Server', function() {
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/users',
-      json: { username: 'Valjean' }
+      json: { name: 'Valjean' }
     }, function () {
       // Post a message to the node chat server:
       request({
         method: 'POST',
         uri: 'http://127.0.0.1:3000/classes/messages',
         json: {
-          username: 'Valjean',
-          message: 'In mercy\'s name, three days is all I need.',
+          user: 'Valjean',
+          text: 'In mercy\'s name, three days is all I need.',
           roomname: 'Hello'
         }
       }, function () {
@@ -69,7 +69,7 @@ describe('Persistent Node Chat Server', function() {
     // them up to you. */
 
     //insert messages
-    dbConnection.query('INSERT INTO messages (user, text, roomname) VALUES ("1","Men like you can never change!","main")', function(err) {
+    dbConnection.query('INSERT INTO messages (userid, text, roomname) VALUES ("1","Men like you can never change!","main")', function(err) {
       if (err) { throw err; }
 
       // Now query the Node chat server and see if it returns
